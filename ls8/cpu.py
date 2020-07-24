@@ -1,8 +1,3 @@
-# TODO: 
-    # work on interrupts
-    ## get keyboard interrupt to work
-    # fix printstr.ls8
-
 """CPU functionality."""
 
 import sys
@@ -124,6 +119,7 @@ class CPU:
         """Run the CPU."""
         self.running = True
         old_time = new_time = time.time()
+        kb = KBHit()
         # kb = KBHit()
         while self.running:
             if self.reg[self.im]:
@@ -133,6 +129,11 @@ class CPU:
             if new_time - old_time > 1:
                 self.reg[self.isr] |= 0b00000001
                 old_time = new_time
+
+            if kb.kbhit():
+                c = kb.getch()
+                self.ram_write(self.sp, ord(c[0]))
+                self.reg[self.isr] |= 0b00000010    
 
             # initialize intruction register and operands (if there are any)
             self.ir = self.ram_read(self.pc)
@@ -147,6 +148,8 @@ class CPU:
             if self.ir & 0b10000 == 0:
                 # move to next instruction
                 self.pc += 1    
+
+        kb.set_normal_term()
 
     def trace(self):
         """
