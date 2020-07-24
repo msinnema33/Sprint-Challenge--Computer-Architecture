@@ -1,0 +1,27 @@
+# output should look like this
+
+*
+**
+****
+********
+****************
+********************************
+
+each subsequent line contains two time the # of asterisks.
+
+Use loops
+need a cmp
+need a JLT, JNE, JEQ (a comparative jmp)
+
+1. LDI, R0, 1
+00000000
+00000001 # the #1 binary
+2. LDI, R1, 2
+00000001
+00000010 # the #2 binary
+2.PRA, R0
+
+3.MUL R0, R1
+
+
+4.
